@@ -1,0 +1,10 @@
+[project]
+name = "python-learnings"
+version = "0.1.0"
+dependencies = [
+    "mkdocs",
+    "pytest",
+    "pymdown-extensions",
+    "pygments",
+    "mkdocs-material"
+]

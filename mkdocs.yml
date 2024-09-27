@@ -1,0 +1,23 @@
+site_name: Python Learnings
+theme:
+  name: material
+  features:
+    - content.code.select
+    - navigation.footer
+nav:
+  - 'python-project-layout.md'
+  - 'distribution.md'
+  - 'poetry.md'
+  - 'entrypoints.md'
+  - 'c-extensions.md'
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - codehilite
+
