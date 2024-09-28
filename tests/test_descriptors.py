@@ -1,27 +1,39 @@
-class MyDescriptor:
-    def __get__(self, instance, owner=None):
-        print("getting")
-        print(instance, owner)
-        ...
+from typing import Generic
+from typing import TypeVar
+import pytest
+
+T = TypeVar("T")
+
+
+class Validated(Generic[T]):
+    def __init__(self, dtype: type[T]) -> None:
+        self.dtype = dtype
 
     def __set_name__(self, owner, name):
-        print("setting name")
-        print(owner)
-        print(name)
+        self.public = name
+        self.private = "_" + name
 
-    def __set__(self, obj, value):
-        ...
+    def __set__(self, obj, value: T):
+        if not isinstance(value, self.dtype):
+            raise ValueError("Wrong type")
+        setattr(obj, self.private, value)
 
-
-class D:
-    c = MyDescriptor()
-
-def test_access():
-    class F:
-        f = MyDescriptor()
+    def __get__(self, instance, owner=None) -> T:
+        return getattr(instance, self.private)
 
 
-    d = D()
+class Person:
+    name = Validated(str)
 
-    print(d.c)
+    def __init__(self, name) -> None:
+        self.name = name
 
+    def a(self):
+        self.name
+
+
+def test_person():
+    with pytest.raises(ValueError):
+        Person(name=0)
+
+    assert Person(name="foo")
